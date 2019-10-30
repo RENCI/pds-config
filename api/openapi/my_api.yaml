@@ -26,20 +26,29 @@ paths:
       summary: Add patient record directory, patient_id, system and diagnosis code
       operationId: api.putConfig
       requestBody:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Config'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Config'
       responses: # has to match output of dispatcher.py
         '200':
           description: Successful operation
-          schema:
-            type: integer
+          content:
+            application/json:
+              schema:
+                type: integer
 components:
   schemas:
     Config:
       type: object
       properties:
         aggregator_plugin_id:
+          type: string
+        profile_plugin_id:
+          type: string
+        phenotype_mapping_plugin_id:
+          type: string
+        data_provider_plugin_id:
           type: string
         model:
           type: array
@@ -57,7 +66,7 @@ components:
                       type: string
                     model_plugin_id:
                       type: string
-                  require:
+                  required:
                     - indication
                     - model_plugin_id
                   additionalProperties: false
@@ -67,5 +76,8 @@ components:
             additionalProperties: false
       required:
         - aggregator_plugin_id
+        - profile_plugin_id
+        - phenotype_mapping_plugin_id
+        - data_provider_plugin_id
         - model
       additionalProperties: false

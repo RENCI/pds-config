@@ -12,17 +12,14 @@ config = {
     "aggregator_plugin_id": "agg",
     "phenotype_mapping_plugin_id": "pds-phenotype-mapping",
     "data_provider_plugin_id": "pdsdpi-mock-fhir",
-    "model": {
-        [{
-            "drug": "d1",
-            "indications": [
-                {
-                    "indication": "i1",
-                    "model_plugin_id": "pdsmpi-ref"
-                }
-            ]
+    "profile_plugin_id": "pds-profile",
+    "model": [{
+        "drug": "d1",
+        "indications": [{
+            "indication": "i1",
+            "model_plugin_id": "pdsmpi-ref"
         }]
-    }
+    }]
 }
 
 def test_get_config():

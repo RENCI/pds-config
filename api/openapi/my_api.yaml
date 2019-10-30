@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  description: 
+    This is a pds-phenotype-mapping-plugin.  You can find
+    out more about Swagger at
+    [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).
+  version: "1.0.0"
+  title: pds-config-plugin
+  license:
+    name: MIT
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /config:
+    get:
+      summary: Add patient record directory, patient_id, system and diagnosis code
+      operationId: api.getConfig
+      responses: # has to match output of dispatcher.py
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Config'
+    put:
+      summary: Add patient record directory, patient_id, system and diagnosis code
+      operationId: api.putConfig
+      requestBody:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Config'
+      responses: # has to match output of dispatcher.py
+        '200':
+          description: Successful operation
+          schema:
+            type: integer
+components:
+  schemas:
+    Config:
+      type: object
+      properties:
+        aggregator_plugin_id:
+          type: string
+        model:
+          type: array
+          items:
+            type: object
+            properties:
+              drug:
+                type: string
+              indications:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    indication:
+                      type: string
+                    model_plugin_id:
+                      type: string
+                  require:
+                    - indication
+                    - model_plugin_id
+                  additionalProperties: false
+            required:
+              - drug
+              - indications
+            additionalProperties: false
+      required:
+        - aggregator_plugin_id
+        - model
+      additionalProperties: false

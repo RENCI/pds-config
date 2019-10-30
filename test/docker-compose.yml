@@ -1,0 +1,14 @@
+version: '3.4'
+services:
+  
+  pdsconfig-test:
+    build:
+      context: test
+    command: ["-s", "-vv"]
+    depends_on:
+      - pdsconfig
+
+
+
+    
+    

@@ -1,0 +1,32 @@
+version: '3.4'
+services:
+  
+  pdsconfig:
+    build:
+      context: .
+    restart: always
+    depends_on:
+      - pdsconfig-mongodb
+    environment:
+      MONGO_HOST: pdsconfig-mongodb
+      MONGO_PORT: 27017
+      MONGO_DATABASE: $MONGO_DATABASE
+      MONGO_COLLECTION: $MONGO_COLLECTION
+      MONGO_NON_ROOT_USERNAME: $MONGO_NON_ROOT_USERNAME
+      MONGO_NON_ROOT_PASSWORD: $MONGO_NON_ROOT_PASSWORD
+    ports:
+      - $API_PORT:8080
+  pdsconfig-mongodb:
+    image: zooh/tx-persistence:0.1.0
+    restart: always
+    volumes:
+      - $MONGODB_DATA_VOLUME:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
+      MONGO_INITDB_DATABASE: $MONGO_DATABASE
+      MONGO_NON_ROOT_USERNAME: $MONGO_NON_ROOT_USERNAME
+      MONGO_NON_ROOT_PASSWORD: $MONGO_NON_ROOT_PASSWORD
+
+
+    

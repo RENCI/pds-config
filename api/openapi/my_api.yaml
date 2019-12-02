@@ -50,6 +50,19 @@ components:
           type: string
         data_provider_plugin_id:
           type: string
+        custom_units:
+          type: array
+          items:
+            type: object
+            properties:
+              clinical_feature_variable:
+                type: string
+              unit:
+                type: string
+            required:
+              - clinical_feature_variable
+              - unit
+            additionalProperties: false
         model:
           type: array
           items:

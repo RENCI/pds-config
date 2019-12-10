@@ -50,17 +50,20 @@ components:
           type: string
         data_provider_plugin_id:
           type: string
-        custom_units:
+        default_units:
           type: array
           items:
             type: object
             properties:
               clinical_feature_variable:
                 type: string
+              title:
+                type: string
               unit:
                 type: string
             required:
               - clinical_feature_variable
+              - title
               - unit
             additionalProperties: false
         model:
@@ -92,5 +95,6 @@ components:
         - profile_plugin_id
         - phenotype_mapping_plugin_id
         - data_provider_plugin_id
+        - default_units
         - model
       additionalProperties: false

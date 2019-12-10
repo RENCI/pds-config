@@ -9,15 +9,20 @@ json_put_headers = {
 }
 
 config = {
-    "aggregator_plugin_id": "agg",
-    "phenotype_mapping_plugin_id": "pds-phenotype-mapping",
-    "data_provider_plugin_id": "pdsdpi-mock-fhir",
-    "profile_plugin_id": "pds-profile",
+    "aggregator_plugin_id": "agg0",
+    "phenotype_mapping_plugin_id": "pds-phenotype-mapping0",
+    "data_provider_plugin_id": "pdsdpi-mock-fhir0",
+    "profile_plugin_id": "pds-profile0",
+    "default_units": [{
+        "clinical_feature_variable": "v0",
+        "unit": "u0",
+        "title": "t0"
+    }],
     "model": [{
-        "drug": "d1",
+        "drug": "d0",
         "indications": [{
-            "indication": "i1",
-            "model_plugin_id": "pdsmpi-ref"
+            "indication": "i0",
+            "model_plugin_id": "m0"
         }]
     }]
 }

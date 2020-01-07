@@ -35,3 +35,9 @@ def test_get_config():
                 
     assert result.json() == config
     
+
+def test_ui():
+    resp = requests.get("http://pdsconfig:8080/ui")
+
+    assert resp.status_code == 200
+            

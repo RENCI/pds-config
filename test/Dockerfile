@@ -1,6 +1,6 @@
 FROM python:3-alpine
 
-RUN pip3 install --no-cache-dir pytest requests
+RUN pip3 install --no-cache-dir pytest requests oslash
 
 RUN mkdir /test
 

@@ -15,13 +15,16 @@ services:
       MONGO_NON_ROOT_USERNAME: $MONGO_NON_ROOT_USERNAME
       MONGO_NON_ROOT_PASSWORD: $MONGO_NON_ROOT_PASSWORD
       DEFAULT_CONFIG: $DEFAULT_CONFIG
+      PDS_HOST: $PDS_HOST
+      PDS_PORT: $PDS_PORT
+      PDS_VERSION: $PDS_VERSION
     ports:
       - $API_PORT:8080
   pdsconfig-mongodb:
-    image: zooh/tx-persistence:0.1.0
+    image: txscience/tx-persistence:$TX_TAG
     restart: always
-    volumes:
-      - $MONGODB_DATA_VOLUME:/data/db
+#    volumes:
+#      - $MONGODB_DATA_VOLUME:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
       MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD

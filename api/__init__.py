@@ -43,9 +43,8 @@ def _cache_plugin_config(piid):
     else:
         config = get(pdsdpi_url_base(piid) + "/config")
         config = config.value
-        if "piid" in config:
-            del config["piid"]
-        mongo_client[mongo_database][mongo_collection].insert_one({"piid": piid, **config})
+        config["piid"] = piid
+        mongo_client[mongo_database][mongo_collection].insert_one({**config})
     return config
     
 
@@ -64,7 +63,7 @@ def _get_plugin_config(piid):
                      
 def _put_plugin_config(piid, body):
     _cache_plugin_config(piid)
-    if "piid" in config:
+    if "piid" in body:
         del body["piid"]
     return mongo_client[mongo_database][mongo_collection].update_one({"piid":piid}, {"$set": body}, upsert=True).modified_count
 

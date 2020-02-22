@@ -44,6 +44,8 @@ def _cache_plugin_config(piid):
         config = get(pdsdpi_url_base(piid) + "/config")
         config = config.value
         config["piid"] = piid
+        if "enable" not in config:
+            config["enabled"] = True
         mongo_client[mongo_database][mongo_collection].insert_one({**config})
     return config
     
@@ -61,7 +63,7 @@ def _get_plugin_config(piid):
     return _cache_plugin_config(piid)
 
                      
-def _put_plugin_config(piid, body):
+def _post_plugin_config(piid, body):
     _cache_plugin_config(piid)
     if "piid" in body:
         del body["piid"]
@@ -72,7 +74,7 @@ def _delete_plugin_config(piid):
     return mongo_client[mongo_database][mongo_collection].delete_one({"piid":piid}).deleted_count
 
 
-def get_config():
+def get_config(status="enabled"):
     system_config = _get_system_config()
     print(system_config)
     sys.stdout.flush()
@@ -80,7 +82,9 @@ def get_config():
     configs = []
     for plugin_id in plugin_ids:
         config = _get_plugin_config(plugin_id)
-        configs.append(config)        
+        enabled = config["enabled"]
+        if status == "all" or (status == "enabled" and enabled) or (status == "disabled" and not enabled):
+            configs.append(config)        
     return configs
 
                      
@@ -97,8 +101,8 @@ def get_plugin_config(piid):
         return _get_plugin_config(piid)
 
                      
-def put_plugin_config(piid, body):
-    _put_plugin_config(piid, body)
+def post_plugin_config(piid, body):
+    _post_plugin_config(piid, body)
     return ""
 
                      

@@ -95,15 +95,102 @@ clinical_feature_variables = [
 
 config = [{
     "piid": "pdspi-guidance-example",
+    "pluginType": "g",
     "requiredPatientVariables": clinical_feature_variables
+}, {
+    "piid": "pdspi-mapper-example",
+    "pluginType": "m"
+}, {
+    "piid": "pdspi-fhir-example",
+   "pluginType": "f"
 }]
+
+config_return = [{
+    "piid": "pdspi-guidance-example",
+    "pluginType": "g",
+    "requiredPatientVariables": clinical_feature_variables,
+    "enabled": True
+}, {
+    "piid": "pdspi-mapper-example",
+    "pluginType": "m",
+    "enabled": True
+}, {
+    "piid": "pdspi-fhir-example",
+    "pluginType": "f",
+    "enabled": True
+}]
+
 
 def test_get_config():
     result=requests.get("http://pdsconfig:8080/config", headers=json_headers)
     print(result.content)
     assert result.status_code == 200
                 
-    assert result.json() == config
+    assert result.json() == config_return
+    
+
+def test_get_config_enabled():
+    result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
+        "enabled": False
+    })
+    result=requests.get("http://pdsconfig:8080/config?status=enabled", headers=json_headers)
+    print(result.content)
+    assert result.status_code == 200
+                
+    assert result.json() == [{
+        "piid": "pdspi-mapper-example",
+        "pluginType": "m",
+        "enabled": True
+    }, {
+        "piid": "pdspi-fhir-example",
+        "pluginType": "f",
+        "enabled": True
+    }]
+
+    requests.delete("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_headers)
+    
+
+def test_get_config_disabled():
+    result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
+        "enabled": False
+    })
+    result=requests.get("http://pdsconfig:8080/config?status=disabled", headers=json_headers)
+    print(result.content)
+    assert result.status_code == 200
+                
+    assert result.json() == [{
+        "piid": "pdspi-guidance-example",
+        "pluginType": "g",
+        "requiredPatientVariables": clinical_feature_variables,
+        "enabled": False
+    }]
+    
+    requests.delete("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_headers)
+    
+
+def test_get_config_all():
+    result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
+        "enabled": False
+    })
+    result=requests.get("http://pdsconfig:8080/config?status=all", headers=json_headers)
+    print(result.content)
+    assert result.status_code == 200
+                
+    assert result.json() == [{
+        "piid": "pdspi-guidance-example",
+        "pluginType": "g",
+        "requiredPatientVariables": clinical_feature_variables,
+        "enabled": False
+    }, {
+        "piid": "pdspi-mapper-example",
+        "pluginType": "m",
+        "enabled": True
+    }, {
+        "piid": "pdspi-fhir-example",
+        "pluginType": "f",
+        "enabled": True
+    }]
+    requests.delete("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_headers)
     
 
 def test_get_plugin_config():
@@ -111,11 +198,11 @@ def test_get_plugin_config():
     print(result.content)
     assert result.status_code == 200
                 
-    assert result.json() == config[0]
+    assert result.json() == config_return[0]
     
 
-def test_put_config_add_property():
-    result=requests.put("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
+def test_post_config_add_property():
+    result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "enabled": False
     })
     assert result.status_code == 200
@@ -129,12 +216,12 @@ def test_put_config_add_property():
     result=requests.delete("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_headers)
     
 
-def test_put_config_override_property():
-    result=requests.put("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
+def test_post_config_override_property():
+    result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "enabled": False
     })
     assert result.status_code == 200
-    result=requests.put("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
+    result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "enabled": True
     })
     assert result.status_code == 200
@@ -149,7 +236,7 @@ def test_put_config_override_property():
     
 
 def test_delete_config():
-    result=requests.put("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
+    result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "enabled": False
     })
     assert result.status_code == 200
@@ -158,7 +245,7 @@ def test_delete_config():
     result=requests.get("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_headers)
                 
     assert result.status_code == 200
-    assert result.json() == config[0]
+    assert result.json() == config_return[0]
 
 def test_get_selectors():
     result=requests.get("http://pdsconfig:8080/selectors", headers=json_headers)

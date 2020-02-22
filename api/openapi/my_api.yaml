@@ -11,6 +11,16 @@ paths:
     get:
       summary: Configuration and default info for plugin(s)
       description: "Gets list of plugins with their selector values, default parameter settings, and required patient variables. Legal values for selectors is optional, and if required, call the '/selectors' endpoint. Legal values for a plugin's parameters and required patient variables, if any, can be found with this call."
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - disabled
+              - enabled
+              - all
+          required: false
       operationId: api.get_config
       responses:
         '200':
@@ -310,8 +320,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PluginConfig"
-    put:
-      operationId: api.put_plugin_config
+    post:
+      operationId: api.post_plugin_config
       parameters:
         - name: piid
           in: path

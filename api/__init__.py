@@ -44,7 +44,7 @@ def _cache_plugin_config(piid):
         config = get(pdsdpi_url_base(piid) + "/config")
         config = config.value
         config["piid"] = piid
-        if "enable" not in config:
+        if "enabled" not in config:
             config["enabled"] = True
         mongo_client[mongo_database][mongo_collection].insert_one({**config})
     return config

@@ -163,6 +163,11 @@ def test_get_config_disabled():
         "pluginType": "g",
         "requiredPatientVariables": clinical_feature_variables,
         "enabled": False
+    }, {
+        "piid": "pdspi-guidance-example2",
+        "pluginType": "g",
+        "requiredPatientVariables": clinical_feature_variables,
+        "enabled": False
     }]
     
     requests.delete("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_headers)
@@ -178,6 +183,11 @@ def test_get_config_all():
                 
     assert result.json() == [{
         "piid": "pdspi-guidance-example",
+        "pluginType": "g",
+        "requiredPatientVariables": clinical_feature_variables,
+        "enabled": False
+    }, {
+        "piid": "pdspi-guidance-example2",
         "pluginType": "g",
         "requiredPatientVariables": clinical_feature_variables,
         "enabled": False
@@ -200,6 +210,19 @@ def test_get_plugin_config():
                 
     assert result.json() == config_return[0]
     
+
+def test_get_plugin_config_disabled():
+    result=requests.get("http://pdsconfig:8080/config/pdspi-guidance-example2", headers=json_headers)
+    print(result.content)
+    assert result.status_code == 200
+                
+    assert result.json() == {
+        "piid": "pdspi-guidance-example2",
+        "pluginType": "g",
+        "requiredPatientVariables": clinical_feature_variables,
+        "enabled": False
+    }
+
 
 def test_post_config_add_property():
     result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
@@ -228,10 +251,7 @@ def test_post_config_override_property():
     result=requests.get("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_headers)
                 
     assert result.status_code == 200
-    assert result.json() == {
-        **config[0],
-        "enabled": True
-    }
+    assert result.json() == config_return[0]
     result=requests.delete("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_headers)
     
 

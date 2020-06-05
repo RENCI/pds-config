@@ -524,7 +524,7 @@ components:
         group:
           type: string
           description: "Provides the client with grouping patient variables into multiple groups"
-          example: "Body Type
+          example: "Body Type"
     Selector:
       description: "Used for selecting plugins"
       type: object

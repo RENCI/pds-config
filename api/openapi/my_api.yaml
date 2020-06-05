@@ -499,7 +499,6 @@ components:
       required:
         - id
         - legalValues
-        - certitude
         - why
       properties:
         id:
@@ -520,6 +519,12 @@ components:
           example: "Age is used to calculate the creatinine clearance. Dosing is lower for geriatric patient and contraindicated for pediatric patients"
         certitude:
           type: integer
+          description: The certitude of the value, 0 not certain, 1 somewhat certain, 2 certain
+          example: 2
+        group:
+          type: string
+          description: "Provides the client with grouping patient variables into multiple groups"
+          example: "Body Type
     Selector:
       description: "Used for selecting plugins"
       type: object

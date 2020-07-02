@@ -226,37 +226,6 @@ paths:
           content:
             application/json:
               schema: {}
-  /customUnits:
-    get:
-      summary: List all PDS selectors
-      description: List selectors and the legal values that can be used for choosing plugins
-      operationId: api.get_custom_units
-      responses:
-        '200':
-          description: "List of all selectors used by installed plugins (possibly a subset of all supported selectors)."
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CustomUnit'
-    put:
-      summary: Modify all PDS selectors
-      description: Modify selectors and the legal values that can be used for choosing plugins
-      operationId: api.put_custom_units
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomUnit'
-      responses:
-        200:
-          description: ""
-          content:
-            application/json:
-              schema: {}
   /config/{piid}:
     get:
       operationId: api.get_plugin_config
@@ -735,22 +704,3 @@ components:
             The time used to compute the patient variable. For example, this could be the current time if a patient is presenting for treatment, or in a retrospective study, it could be an intervention date, or any date within the retrospective study timeframe.
           format: date-time
           example: "2020-07-01T14:29:15.453Z"
-    CustomUnit:
-      description: ""
-      type: object
-      required:
-        - id
-        - units
-      properties:
-        title:
-          type: string
-          example: "Drug"
-          description: "Human-readable name for this selector type."
-        id:
-          type: string
-          description: "The client should have prior knowledge of the full list of selectors available with this version of the PDS. This id is used to determine which selector type is described."
-          example: "dosing.rxCUI"
-        units:
-          type: string
-          description: "custom unit"
-          example: "years"

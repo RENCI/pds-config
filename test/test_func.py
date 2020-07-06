@@ -9,16 +9,6 @@ json_put_headers = {
     "Content-Type": "application/json"
 }
 
-custom_units = [{
-    "id": "v0",
-    "units": "u0"
-}]
-
-custom_units2 = [{
-    "id": "v1",
-    "units": "u1"
-}]
-
 selectors = [{
     "title": "Drug",
     "id": "dosing.rxCUI",
@@ -95,8 +85,7 @@ clinical_feature_variables = [
 
 config = [{
     "piid": "pdspi-guidance-example",
-    "pluginType": "g",
-    "requiredPatientVariables": clinical_feature_variables
+    "pluginType": "g"
 }, {
     "piid": "pdspi-mapper-example",
     "pluginType": "m"
@@ -108,7 +97,6 @@ config = [{
 config_return = [{
     "piid": "pdspi-guidance-example",
     "pluginType": "g",
-    "requiredPatientVariables": clinical_feature_variables,
     "enabled": True
 }, {
     "piid": "pdspi-mapper-example",
@@ -161,12 +149,10 @@ def test_get_config_disabled():
     assert result.json() == [{
         "piid": "pdspi-guidance-example",
         "pluginType": "g",
-        "requiredPatientVariables": clinical_feature_variables,
         "enabled": False
     }, {
         "piid": "pdspi-guidance-example2",
         "pluginType": "g",
-        "requiredPatientVariables": clinical_feature_variables,
         "enabled": False
     }]
     
@@ -184,12 +170,10 @@ def test_get_config_all():
     assert result.json() == [{
         "piid": "pdspi-guidance-example",
         "pluginType": "g",
-        "requiredPatientVariables": clinical_feature_variables,
         "enabled": False
     }, {
         "piid": "pdspi-guidance-example2",
         "pluginType": "g",
-        "requiredPatientVariables": clinical_feature_variables,
         "enabled": False
     }, {
         "piid": "pdspi-mapper-example",
@@ -219,7 +203,6 @@ def test_get_plugin_config_disabled():
     assert result.json() == {
         "piid": "pdspi-guidance-example2",
         "pluginType": "g",
-        "requiredPatientVariables": clinical_feature_variables,
         "enabled": False
     }
 
@@ -283,29 +266,9 @@ def test_put_selectors():
     assert result.status_code == 200
                 
     assert result.json() == selectors2
-
-
-def test_get_custom_units():
-    result=requests.get("http://pdsconfig:8080/customUnits", headers=json_headers)
-    print(result.content)
-    assert result.status_code == 200
-                
-    assert result.json() == custom_units
-
-def test_put_custom_units():
-    result=requests.put("http://pdsconfig:8080/customUnits", headers=json_put_headers, json=custom_units2)
-    assert result.status_code == 200
-
-    result=requests.get("http://pdsconfig:8080/customUnits", headers=json_headers)
-    print(result.content)
-    assert result.status_code == 200
-                
-    assert result.json() == custom_units2
-
     
 
 def test_ui():
     resp = requests.get("http://pdsconfig:8080/ui")
 
     assert resp.status_code == 200
-            

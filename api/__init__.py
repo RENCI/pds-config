@@ -121,16 +121,3 @@ def put_selectors(body):
         "selectors": body
     })
     return ""
-
-                     
-def get_custom_units():
-    system_config = _get_system_config()
-    return system_config["custom_units"]
-
-                     
-def put_custom_units(body):
-    _put_system_config({
-        "custom_units": body
-    })
-    return ""
-        

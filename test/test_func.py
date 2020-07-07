@@ -120,6 +120,7 @@ def test_get_config():
 def test_get_config_enabled():
     result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "piid": "pdspi-guidance-example",
+        "pluginType": "g",
         "enabled": False
     })
     result=requests.get("http://pdsconfig:8080/config?status=enabled", headers=json_headers)
@@ -142,6 +143,7 @@ def test_get_config_enabled():
 def test_get_config_disabled():
     result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "piid": "pdspi-guidance-example",
+        "pluginType": "g",
         "enabled": False
     })
     result=requests.get("http://pdsconfig:8080/config?status=disabled", headers=json_headers)
@@ -164,6 +166,7 @@ def test_get_config_disabled():
 def test_get_config_all():
     result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "piid": "pdspi-guidance-example",
+        "pluginType": "g",
         "enabled": False
     })
     result=requests.get("http://pdsconfig:8080/config?status=all", headers=json_headers)
@@ -213,6 +216,7 @@ def test_get_plugin_config_disabled():
 def test_post_config_add_property():
     result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "piid": "pdspi-guidance-example",
+        "pluginType": "g",
         "enabled": False
     })
     assert result.status_code == 200
@@ -229,11 +233,13 @@ def test_post_config_add_property():
 def test_post_config_override_property():
     result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "piid": "pdspi-guidance-example",
+        "pluginType": "g",
         "enabled": False
     })
     assert result.status_code == 200
     result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "piid": "pdspi-guidance-example",
+        "pluginType": "g",
         "enabled": True
     })
     assert result.status_code == 200
@@ -247,6 +253,7 @@ def test_post_config_override_property():
 def test_delete_config():
     result=requests.post("http://pdsconfig:8080/config/pdspi-guidance-example", headers=json_put_headers, json={
         "piid": "pdspi-guidance-example",
+        "pluginType": "g",
         "enabled": False
     })
     assert result.status_code == 200

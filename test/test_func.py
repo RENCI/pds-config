@@ -215,6 +215,7 @@ def test_get_plugin_config_disabled():
     assert result.json() == {
         "piid": "pdspi-guidance-example2",
         "pluginType": "g",
+        "settingsDefaults": {"patientVariables": clinical_feature_variables},
         "enabled": False
     }
 

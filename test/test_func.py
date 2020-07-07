@@ -85,7 +85,8 @@ clinical_feature_variables = [
 
 config = [{
     "piid": "pdspi-guidance-example",
-    "pluginType": "g"
+    "pluginType": "g",
+    "settingsDefaults": {"patientVariables": clinical_feature_variables},
 }, {
     "piid": "pdspi-mapper-example",
     "pluginType": "m"
@@ -97,6 +98,7 @@ config = [{
 config_return = [{
     "piid": "pdspi-guidance-example",
     "pluginType": "g",
+    "settingsDefaults": {"patientVariables": clinical_feature_variables},
     "enabled": True
 }, {
     "piid": "pdspi-mapper-example",
@@ -153,10 +155,12 @@ def test_get_config_disabled():
     assert result.json() == [{
         "piid": "pdspi-guidance-example",
         "pluginType": "g",
+        "settingsDefaults": {"patientVariables": clinical_feature_variables},
         "enabled": False
     }, {
         "piid": "pdspi-guidance-example2",
         "pluginType": "g",
+        "settingsDefaults": {"patientVariables": clinical_feature_variables},
         "enabled": False
     }]
     
@@ -176,10 +180,12 @@ def test_get_config_all():
     assert result.json() == [{
         "piid": "pdspi-guidance-example",
         "pluginType": "g",
+        "settingsDefaults": {"patientVariables": clinical_feature_variables},
         "enabled": False
     }, {
         "piid": "pdspi-guidance-example2",
         "pluginType": "g",
+        "settingsDefaults": {"patientVariables": clinical_feature_variables},
         "enabled": False
     }, {
         "piid": "pdspi-mapper-example",

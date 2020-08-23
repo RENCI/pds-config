@@ -42,6 +42,7 @@ def _cache_plugin_config(piid):
         del config["_id"]
     else:
         config = get(pdsdpi_url_base(piid) + "/config")
+        print(config)
         config = config.value
         config["piid"] = piid
         if "enabled" not in config:
@@ -76,8 +77,6 @@ def _delete_plugin_config(piid):
 
 def get_config(status="enabled"):
     system_config = _get_system_config()
-    print(system_config)
-    sys.stdout.flush()
     plugin_ids = system_config["piids"]
     configs = []
     for plugin_id in plugin_ids:

@@ -4,7 +4,7 @@ services:
   pdsconfig-test:
     build:
       context: test
-    command: ["-s", "-vv"]
+    command: ["-s", "-vv"] # , "-k", "get_config_disabled"]
     depends_on:
       - pdsconfig
       - pdsconfig-test-pds-server

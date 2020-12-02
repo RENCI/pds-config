@@ -85,22 +85,24 @@ def _delete_plugin_config(piid):
     return mongo_client[mongo_database][mongo_collection].delete_one({"piid":piid}).deleted_count
 
 
-def post_config(body):
+def post_selector_config(body):
     system_config = _get_system_config()
     custom_rules = system_config["customRules"]
     system_config["customRules"] = body + custom_rules
     _put_system_config(system_config)
 
-    return get_config()
+    return get_selector_config()
 
-def delete_config():
+
+def delete_selector_config():
     body = request = connexion.request.json
     system_config = _get_system_config()
     custom_rules = system_config["customRules"]
     system_config["customRules"] = [custom_rule for custom_rule in custom_rules if custom_rule not in body]
     _put_system_config(system_config)
 
-    return get_config()
+    return get_selector_config()
+
 
 def key_selector(selector):
     return {
@@ -174,6 +176,34 @@ def plugin_config(plugin_id, custom_selectors=None):
     
 def get_config(status="enabled"):
     system_config = _get_system_config()
+    plugin_ids = system_config["piids"]
+    configs = []
+
+    for plugin_id in plugin_ids:
+        config = _get_plugin_config(plugin_id)
+        enabled = config["enabled"]
+        if status == "all" or (status == "enabled" and enabled) or (status == "disabled" and not enabled):
+            configs.append(config)
+
+    return configs
+
+    
+def get_config_factory_default(status="enabled"):
+    system_config = _get_system_config()
+    plugin_ids = system_config["piids"]
+    configs = []
+
+    for plugin_id in plugin_ids:
+        config = _get_plugin_config_factory_default(plugin_id)
+        enabled = config["enabled"]
+        if status == "all" or (status == "enabled" and enabled) or (status == "disabled" and not enabled):
+            configs.append(config)
+
+    return configs
+
+    
+def get_selector_config(status="enabled"):
+    system_config = _get_system_config()
     custom_rules = system_config["customRules"]
     plugin_ids = system_config["piids"]
     plugin_configs = defaultdict(list)
@@ -193,9 +223,8 @@ def get_config(status="enabled"):
 
     return configs
 
-    
 
-def get_config_factory_default(status="enabled"):
+def get_selector_config_factory_default(status="enabled"):
     system_config = _get_system_config()
     custom_rules = system_config["customRules"]
     plugin_ids = system_config["piids"]
